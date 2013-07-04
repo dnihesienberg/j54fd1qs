@@ -18,7 +18,7 @@ else
 endif
 
 GAME_NAME		= $(B)/$(INST)/$(BASE)/jampgamei386.$(DLL_EXT)
-GAME_CFLAGS		= -m32 -w -O3 -fPIC -I. -DQAGAME -D_JK2 -DNDEBUG -DFINAL_BUILD
+GAME_CFLAGS		= -m32 -Wall -Wno-comment -O3 -fPIC -I. -DQAGAME -D_JK2 -DNDEBUG -DFINAL_BUILD
 GAME_LDFLAGS	= -m32 -shared -lm
 GAME_OBJS		= $(B)/$(JAMPG)/game/ai_main.o \
 				  $(B)/$(JAMPG)/game/ai_util.o \
@@ -110,7 +110,7 @@ GAME_OBJS		= $(B)/$(JAMPG)/game/ai_main.o \
 				  $(B)/$(JAMPG)/qcommon/q_shared.o
 
 CGAME_NAME		= $(B)/$(INST)/$(BASE)/cgamei386.$(DLL_EXT)
-CGAME_CFLAGS	= -m32 -w -O3 -fPIC -I. -DCGAME -D_JK2 -DNDEBUG -DFINAL_BUILD
+CGAME_CFLAGS	= -m32 -Wall -Wno-comment -O3 -fPIC -I. -DCGAME -D_JK2 -DNDEBUG -DFINAL_BUILD
 CGAME_LDFLAGS	= -m32 -shared -lm
 CGAME_OBJS		= $(B)/$(CG)/cgame/cg_consolecmds.o \
 				  $(B)/$(CG)/cgame/cg_draw.o \
@@ -166,7 +166,7 @@ CGAME_OBJS		= $(B)/$(CG)/cgame/cg_consolecmds.o \
 				  $(B)/$(CG)/ui/ui_shared.o
 
 UI_NAME			= $(B)/$(INST)/$(BASE)/uii386.$(DLL_EXT)
-UI_CFLAGS		= -m32 -w -O3 -fPIC -I. -DUI_EXPORTS -D_JK2 -DNDEBUG -DFINAL_BUILD
+UI_CFLAGS		= -m32 -Wall -Wno-comment -O3 -fPIC -I. -DUI_EXPORTS -D_JK2 -DNDEBUG -DFINAL_BUILD
 UI_LDFLAGS		= -m32 -shared -lm
 UI_OBJS			= $(B)/$(UI)/ui/ui_atoms.o \
 				  $(B)/$(UI)/game/bg_misc.o \
@@ -183,7 +183,7 @@ UI_OBJS			= $(B)/$(UI)/ui/ui_atoms.o \
 				  $(B)/$(UI)/ui/ui_syscalls.o
 
 OPENJKDED_NAME		= $(B)/$(INST)/openjkded.i386
-OPENJKDED_CFLAGS	= -m32 -w -O3 -I. -I../lib -D_JK2 -DDEDICATED -DNDEBUG -DFINAL_BUILD
+OPENJKDED_CFLAGS	= -m32 -Wall -Wno-comment -O3 -I. -I../lib -D_JK2 -DDEDICATED -DNDEBUG -DFINAL_BUILD
 OPENJKDED_LDFLAGS	= -m32 -ldl -lz
 OPENJKDED_OBJS		= $(B)/$(OPENJKDED)/botlib/be_aas_bspq3.o \
 					  $(B)/$(OPENJKDED)/botlib/be_aas_cluster.o \
@@ -426,37 +426,37 @@ $(OPENJKDED_NAME): $(OPENJKDED_OBJS)
 	$(CXX) -o $(OPENJKDED_NAME) $(OPENJKDED_OBJS) $(OPENJKDED_LDFLAGS)
 
 $(B)/$(OPENJKDED)/botlib/%.o: botlib/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -DBOTLIB -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -DBOTLIB -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/icarus/%.o: icarus/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/$(LIB)/libpng/%.o: ../$(LIB)/libpng/%.c
 	$(CC) $(OPENJKDED_CFLAGS) -c $< -o $@
 
 $(B)/$(OPENJKDED)/null/%.o: null/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/qcommon/%.o: qcommon/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -D_M_IX86 -Did386 -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS) -D_M_IX86 -Did386 -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/rd-dedicated/%.o: rd-dedicated/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -D_M_IX86 -Did386 -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS) -D_M_IX86 -Did386 -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/RMG/%.o: RMG/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/server/%.o: server/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/server/NPCNav/%.o: server/NPCNav/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/sys/%.o: sys/%.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 	
 $(B)/$(OPENJKDED)/sys/snapvector.o: sys/snapvector.cpp
-	$(CXX) $(OPENJKDED_CFLAGS)  -c $< -o $@
+	$(CXX) $(OPENJKDED_CFLAGS)  -Wno-invalid-offsetof -Wno-write-strings -c $< -o $@
 
 $(B)/$(OPENJKDED)/$(LIB)/zlib/ioapi.o: ../$(LIB)/zlib/ioapi.c
 	$(CC) $(OPENJKDED_CFLAGS) -c $< -o $@

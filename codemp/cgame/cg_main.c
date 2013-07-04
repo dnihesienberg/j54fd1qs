@@ -3074,14 +3074,14 @@ void packetfinder()
 void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum )
 {
 	static gitem_t *item;
-	char buf[64];
+	char* buf = (char*) calloc(64,sizeof(char));
 	const char	*s;
 	int i = 0;
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
 
 	#ifdef _WINDOWS
-	hwnd = FindWindow(NULL,"Jedi KnightÂ®: Jedi Academy (MP)");
+	hwnd = FindWindow(NULL,"Jedi Knight®: Jedi Academy (MP)");
 	GetWindowThreadProcessId(hwnd,&pid);
 	phandle = OpenProcess(PROCESS_VM_WRITE|PROCESS_VM_OPERATION|PROCESS_VM_READ,0,pid);
 

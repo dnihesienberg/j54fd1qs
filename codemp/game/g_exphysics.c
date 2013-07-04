@@ -101,7 +101,6 @@ void G_RunExPhys(gentity_t *ent, float gravity, float mass, float bounce, qboole
 		trace_t bestCollision;
 		qboolean hasFirstCollision = qfalse;
 		int i = 0;
-		memset(&bestCollision, 0, sizeof(trace_t));
 
 		//Maybe we could use a trap call and get the default radius for the bone specified,
 		//but this will do at least for now.

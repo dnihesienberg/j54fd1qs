@@ -123,9 +123,8 @@ COM_GetExtension
 */
 const char *COM_GetExtension( const char *name )
 {
-	const char *dot = strrchr(name, '.');
-	const char *slash = strrchr(name, '/');
-	if (dot && (!slash || slash < dot))
+	const char *dot = strrchr(name, '.'), *slash;
+	if (dot && (!(slash = strrchr(name, '/')) || slash < dot))
 		return dot + 1;
 	else
 		return "";
@@ -138,9 +137,8 @@ COM_StripExtension
 */
 void COM_StripExtension( const char *in, char *out, int destsize )
 {
-	const char *dot = strrchr(in, '.');
-	const char *slash = strrchr(in, '/');
-	if (dot && (!slash || slash < dot))
+	const char *dot = strrchr(in, '.'), *slash;
+	if (dot && (!(slash = strrchr(in, '/')) || slash < dot))
 		Q_strncpyz(out, in, (destsize < dot-in+1 ? destsize : dot-in+1));
 	else
 		Q_strncpyz(out, in, destsize);
@@ -178,9 +176,8 @@ COM_DefaultExtension
 */
 void COM_DefaultExtension( char *path, int maxSize, const char *extension )
 {
-	const char *dot = strrchr(path, '.');
-	const char *slash = strrchr(path, '/');
-	if (dot && (!slash || slash < dot))
+	const char *dot = strrchr(path, '.'), *slash;
+	if (dot && (!(slash = strrchr(path, '/')) || slash < dot))
 		return;
 	else
 		Q_strcat(path, maxSize, extension);

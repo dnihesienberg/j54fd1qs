@@ -1600,7 +1600,7 @@ void CG_NewClientInfo( int clientNum, qboolean entitiesInitialized ) {
 	}
 
 	//Raz: Gender hints
-	if ( (v = Info_ValueForKey( configstring, "ds" )) )
+	if ( (v == Info_ValueForKey( configstring, "ds" )) )
 	{
 		if ( *v == 'm' )
 			newInfo.gender = GENDER_MALE;

@@ -823,7 +823,10 @@ qboolean CROFFSystem::ApplyROFF( SROFFEntity *roff_ent, CROFFSystem::CROFF *roff
 	sharedEntity_t	*ent = NULL;
 	trajectory_t	*originTrajectory, *angleTrajectory;
 	vec_t			*origin, *angle;
-
+	memset(&originTrajectory, 0, sizeof(originTrajectory));
+	memset(&angleTrajectory, 0, sizeof(angleTrajectory));
+	memset(&origin, 0, sizeof(origin));
+	memset(&angle, 0, sizeof(angle));
 
 	if ( svs.time < roff_ent->mNextROFFTime )
 	{ // Not time to roff yet

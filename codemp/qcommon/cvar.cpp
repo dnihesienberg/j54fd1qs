@@ -156,8 +156,9 @@ Cvar_Flags
 */
 int Cvar_Flags( const char *var_name ) {
 	cvar_t *var;
-
-	if(!(var = Cvar_FindVar(var_name)))
+	
+	var = Cvar_FindVar(var_name);
+	if(!var)
 		return CVAR_NONEXISTENT;
 	else
 	{

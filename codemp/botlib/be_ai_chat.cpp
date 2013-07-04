@@ -353,8 +353,10 @@ int BotNextConsoleMessage(int chatstate, bot_consolemessage_t *cm)
 	bot_consolemessage_t *firstmsg;
 
 	cs = BotChatStateFromHandle(chatstate);
+	firstmsg = cs->firstmessage;
+
 	if (!cs) return 0;
-	if ((firstmsg = cs->firstmessage))
+	if (firstmsg)
 	{
 		cm->handle = firstmsg->handle;
 		cm->time = firstmsg->time;

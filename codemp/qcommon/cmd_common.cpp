@@ -446,9 +446,11 @@ void Cmd_Args_Sanitize( void ) {
 		if ( strlen( c ) >= MAX_CVAR_VALUE_STRING )
 			c[MAX_CVAR_VALUE_STRING-1] = '\0';
 		
-		while ( (c=strpbrk( c, "\n\r;" )) ) {
+		c = strpbrk( c, "\n\r;" );
+		while ( c ) {
 			*c = ' ';
 			++c;
+			c = strpbrk( c, "\n\r;" );
 		}
 	}
 }

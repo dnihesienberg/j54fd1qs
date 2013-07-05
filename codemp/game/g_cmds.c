@@ -1909,6 +1909,45 @@ void Cmd_Where_f( gentity_t *ent ) {
 	//trap_SendServerCommand( ent-g_entities, va("print \"%s\n\"", vtos( ent->s.origin ) ) );
 }
 
+/*
+==================
+Cmd_b_Whois_f
+==================
+*/
+void Cmd_Whois_f ( gentity_t *ent )
+{
+	int i;
+	gclient_t			*cl;
+
+	trap_SendServerCommand( ent-g_entities, "print \"num ping name             address        \n\"" );
+	trap_SendServerCommand( ent-g_entities, "print \"--- ---- --------------- ---------------\n\"" );
+
+	for (i = 0; i < level.maxclients; i++)
+	{
+		int j;
+		char cleanName[MAX_NETNAME];
+		char IP_noport[64];
+		cl = &level.clients[i];
+		Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
+		Q_StripColor(cleanName);
+		Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
+		Q_strncpyz( IP_noport, cl->sess.IP, sizeof(IP_noport) );
+		for (j = 0; IP_noport[i]; j++)
+		{
+			if (IP_noport[j] == ':')
+			{
+				IP_noport[j] = '\0';
+				break;
+			}
+		}
+
+		if(cl && cl->pers.connected == CON_CONNECTED)
+		{
+			trap_SendServerCommand( ent-g_entities, va("print \"%3i %4i %-15.15s %15s\n\"", cl->ps.clientNum, cl->ps.ping, cleanName, IP_noport));
+		}
+	}
+}
+
 static const char *gameNames[] = {
 	"Free For All",
 	"Holocron FFA",
@@ -3343,6 +3382,7 @@ command_t commands[] = {
 	{ "voice_cmd",			Cmd_VoiceCommand_f,			CMD_NOINTERMISSION },
 	{ "vote",				Cmd_Vote_f,					CMD_NOINTERMISSION },
 	{ "where",				Cmd_Where_f,				CMD_NOINTERMISSION },
+	{ "whois",				Cmd_Whois_f,				CMD_NOINTERMISSION },
 };
 static size_t numCommands = ARRAY_LEN( commands );
 

@@ -1932,7 +1932,7 @@ void Cmd_Whois_f ( gentity_t *ent )
 		Q_StripColor(cleanName);
 		Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
 		Q_strncpyz( IP_noport, cl->sess.IP, sizeof(IP_noport) );
-		for (j = 0; IP_noport[i]; j++)
+		for (j = 0; IP_noport[j]; j++)
 		{
 			if (IP_noport[j] == ':')
 			{

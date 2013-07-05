@@ -2959,7 +2959,6 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			}
 		}*/
 
-		teamcount_b = qfalse;
 		CheckExitRules();
 	}
 

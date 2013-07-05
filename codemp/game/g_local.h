@@ -96,7 +96,6 @@ extern vec3_t gPainPoint;
 
 #define	MAX_G_SHARED_BUFFER_SIZE		8192
 extern char gSharedBuffer[MAX_G_SHARED_BUFFER_SIZE];
-qboolean teamcount_b;
 
 // movers are things like doors, plats, buttons, etc
 typedef enum {

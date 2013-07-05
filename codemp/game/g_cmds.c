@@ -662,7 +662,6 @@ void SetTeam( gentity_t *ent, char *s ) {
 	int					teamLeader;
 
 	//[BASEJKA.COM B_LTS]-->
-	teamcount_b = qfalse;
 
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{

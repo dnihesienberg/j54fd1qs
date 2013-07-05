@@ -1167,25 +1167,37 @@ void SiegeRespawn(gentity_t *ent);
 void respawn( gentity_t *ent ) {
 	MaintainBodyQueue(ent);
 
-	//YBERION
-	if (ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-	{
+	//[BASEJKA.COM B_LTS]-->
 
-		if (ent->client->tempSpectate <= level.time)
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		if (ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
-			int minDel = timelimit.integer* 2000;
-			if (level.time < timelimit.integer)
-			{
-				minDel = timelimit.integer* 2000;
-			}
+			int i;
+			int minDel = ((timelimit.integer)*60)*1000;
 			ent->client->tempSpectate = level.time + minDel;
 			ent->health = ent->client->ps.stats[STAT_HEALTH] = 1;
-			ent->health = ent->client->ps.stats[STAT_ARMOR] = 0;
 			ent->client->ps.weapon = WP_NONE;
 			ent->client->ps.stats[STAT_WEAPONS] = 0;
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
 			ent->client->ps.stats[STAT_HOLDABLE_ITEM] = 0;
 			ent->takedamage = qfalse;
+			ent->client->ps.viewangles[ROLL] = 0.0f;
+			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
+			ent->client->ps.forceHandExtendTime = 0;
+			ent->client->ps.zoomMode = 0;
+			ent->client->ps.zoomLocked = qfalse;
+			ent->client->ps.zoomLockTime = 0;
+			ent->client->ps.legsAnim = 0;
+			ent->client->ps.legsTimer = 0;
+			ent->client->ps.torsoAnim = 0;
+			ent->client->ps.torsoTimer = 0;
+			ent->client->ps.isJediMaster = qfalse; // major exploit if you are spectating somebody and they are JM and you reconnect
+			ent->client->ps.cloakFuel = 100; // so that fuel goes away after stop following them
+			ent->client->ps.jetpackFuel = 100; // so that fuel goes away after stop following them
+			ent->client->ps.bobCycle = 0;
+			for ( i=0; i<PW_NUM_POWERUPS; i++ )
+			ent->client->ps.powerups[i] = 0;
 			trap_LinkEntity(ent);
 
 			// Respawn time.
@@ -1195,10 +1207,12 @@ void respawn( gentity_t *ent ) {
 				te->s.time = g_siegeRespawnCheck;
 				te->s.owner = ent->s.number;
 			}
+			ClientUserinfoChanged(ent->client->ps.clientNum);
+			return;
 		}
-		ClientUserinfoChanged(ent->client->ps.clientNum);
-		return;
 	}
+
+	//<--[BASEJKA.COM B_LTS]
 
 	if (gEscaping || level.gametype == GT_POWERDUEL)
 	{
@@ -2125,11 +2139,17 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
-	//YBERION
-	if (ent->client->pers.isDeadc == qtrue)
+	////[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
-		strcat(ent->client->pers.netname, " (Dead)");
+		if (ent->client->pers.isDeadc == qtrue)
+		{
+			strcat(ent->client->pers.netname, " (Dead)");
+		}
 	}
+
+	//<--[BASEJKA.COM B_LTS]
 
 	// set model
 	Q_strncpyz( model, Info_ValueForKey( userinfo, "model" ), sizeof( model ) );
@@ -2542,8 +2562,14 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	te->r.svFlags |= SVF_BROADCAST;
 	te->s.eventParm = clientNum;
 
-	//YBERION
-	ent->client->pers.isDeadc = qfalse;
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		ent->client->pers.isDeadc = qfalse;
+	}
+
+	//<--[BASEJKA.COM B_LTS]
 
 	// for statistics
 //	client->areabits = areabits;
@@ -2579,9 +2605,6 @@ void ClientBegin( int clientNum, qboolean allowTeamReset ) {
 	int			spawnCount;
 
 	ent = g_entities + clientNum;
-
-	//YBERION
-	ent->client->pers.someoneDiedc = qfalse;
 
 	if ((ent->r.svFlags & SVF_BOT) && level.gametype >= GT_TEAM)
 	{

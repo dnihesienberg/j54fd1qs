@@ -365,7 +365,21 @@ void Team_FragBonuses(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker
 
 	// no bonus for fragging yourself or team mates
 	if (!targ->client || !attacker->client || targ == attacker || OnSameTeam(targ, attacker))
+	{
+
+		//[BASEJKA.COM B_LTS]-->
+
+		if ( level.gametype == GT_TEAM && b_lts.integer )
+		{
+			level.teamScores[TEAM_BLUE] += 1;
+			level.teamScores[TEAM_RED] += 1;
+			CalculateRanks();
+		}
+
+		//<--[BASEJKA.COM B_LTS]
+
 		return;
+	}
 
 	team = targ->client->sess.sessionTeam;
 	otherteam = OtherTeam(targ->client->sess.sessionTeam);

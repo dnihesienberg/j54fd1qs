@@ -661,17 +661,23 @@ void SetTeam( gentity_t *ent, char *s ) {
 	int					specClient;
 	int					teamLeader;
 
-	//YBERION
-	if(ent->client->pers.isDeadc == qtrue && (!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ))
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
-		trap_SendServerCommand(-1, "print \"Game is still in progress and you just died, unable to join a team\n\"");
-		return;
+		if(ent->client->pers.isDeadc == qtrue && (!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ))
+		{
+			trap_SendServerCommand(ent-g_entities, "print \"Game is still in progress and you just died, you can only join spectator\n\"");
+			return;
+		}
+		else
+		{
+			ent->client->pers.isDeadc = qfalse;
+		}	
 	}
-	else
-	{
-		ent->client->pers.isDeadc = qfalse;
-	}	
-	
+
+	//<--[BASEJKA.COM B_LTS]
+
 	// fix: this prevents rare creation of invalid players
 	if (!ent->inuse)
 	{
@@ -898,15 +904,44 @@ void SetTeam( gentity_t *ent, char *s ) {
 	// he starts at 'base'
 	client->pers.teamState.state = TEAM_BEGIN;
 	if ( oldTeam != TEAM_SPECTATOR ) {
+
+		//[BASEJKA.COM B_LTS]-->
+
+		if ( level.gametype == GT_TEAM && b_lts.integer )
+		{
+			if (oldTeam == TEAM_BLUE && team == TEAM_RED)
+			{
+				trap_SendServerCommand(ent-g_entities, "print \"Team : ^5BLUE^7, go spectator to change your team\n\"");
+				return;
+			}
+			else if (oldTeam == TEAM_RED && team == TEAM_BLUE)
+			{
+				trap_SendServerCommand(ent-g_entities, "print \"Team : ^1RED^7, go spectator to change your team\n\"");
+				return;
+			}
+		}
+
+		//<--[BASEJKA.COM B_LTS]
+
 		// Kill him (makes sure he loses flags, etc)
 		ent->flags &= ~FL_GODMODE;
 		ent->client->ps.stats[STAT_HEALTH] = ent->health = 0;
 		g_dontPenalizeTeam = qtrue;
 		player_die (ent, ent, ent, 100000, MOD_SUICIDE);
 		g_dontPenalizeTeam = qfalse;
-		
-		//YBERION
-		ent->client->pers.isDeadc = qfalse;
+
+		//[BASEJKA.COM B_LTS]-->
+
+		if ( level.gametype == GT_TEAM && b_lts.integer )
+		{
+			ent->client->pers.isDeadc = qfalse;
+			level.teamScores[TEAM_BLUE] -= 1;
+			level.teamScores[TEAM_RED] -= 1;
+			CalculateRanks();
+		}
+
+		//<--[BASEJKA.COM B_LTS]
+
 	}
 	// they go to the end of the line for tournements
 	if ( team == TEAM_SPECTATOR ) {

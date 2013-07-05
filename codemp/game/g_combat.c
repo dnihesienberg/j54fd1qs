@@ -2917,9 +2917,53 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 		}
 	}
 
-	//YBERION
-	self->client->pers.isDeadc = qtrue;
-	self->client->pers.someoneDiedc = qtrue;
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		self->client->pers.isDeadc = qtrue;
+
+		/*if (self->client->pers.isDeadc == qtrue)
+		{
+			if (  (meansOfDeath == MOD_UNKNOWN ||
+				  meansOfDeath == MOD_WATER ||
+				  meansOfDeath == MOD_SLIME ||
+				  meansOfDeath == MOD_LAVA ||
+				  meansOfDeath == MOD_CRUSH ||
+				  meansOfDeath == MOD_TELEFRAG ||
+				  meansOfDeath == MOD_FALLING ||
+				  meansOfDeath == MOD_SUICIDE ||
+				  meansOfDeath == MOD_TARGET_LASER ||
+				  meansOfDeath == MOD_TRIGGER_HURT) && self->client->ps.persistant[PERS_TEAM] == TEAM_RED)
+			{
+				level.teamScores[TEAM_BLUE] += 1;
+				level.teamScores[TEAM_RED] += 1;
+				CalculateRanks();
+				CheckExitRules();
+			}
+			else if (  (meansOfDeath == MOD_UNKNOWN ||
+				  meansOfDeath == MOD_WATER ||
+				  meansOfDeath == MOD_SLIME ||
+				  meansOfDeath == MOD_LAVA ||
+				  meansOfDeath == MOD_CRUSH ||
+				  meansOfDeath == MOD_TELEFRAG ||
+				  meansOfDeath == MOD_FALLING ||
+				  meansOfDeath == MOD_SUICIDE ||
+				  meansOfDeath == MOD_TARGET_LASER ||
+				  meansOfDeath == MOD_TRIGGER_HURT) && self->client->ps.persistant[PERS_TEAM] == TEAM_BLUE)
+			{
+				level.teamScores[TEAM_BLUE] += 1;
+				level.teamScores[TEAM_RED] += 1;
+				CalculateRanks();
+				CheckExitRules();
+			}
+		}*/
+
+		CheckExitRules();
+	}
+
+	//<--[BASEJKA.COM B_LTS]
+
 }
 
 

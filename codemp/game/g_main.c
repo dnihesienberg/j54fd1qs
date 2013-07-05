@@ -42,9 +42,6 @@ qboolean G_EntIsBreakable( int entityNum );
 qboolean G_EntIsRemovableUsable( int entNum );
 void CP_FindCombatPointWaypoints( void );
 
-//YBERION
-qboolean firstcountTeam = qfalse;
-
 /*
 ================
 vmMain
@@ -2326,42 +2323,24 @@ void CheckExitRules( void ) {
 	{
 		sKillLimit = "Kill limit hit.";
 	}
-	
-	//YBERION
-	if ( level.gametype == GT_TEAM && b_competitive.integer )
+
+	////[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
-		int i;
 		int	counts[TEAM_NUM_TEAMS];
-		
-		if (firstcountTeam == qfalse)
-		{
-			counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
-			counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
-		}
 
-		for ( i = 0 ; i< sv_maxclients.integer ; i++ )
-		{
-			cl = level.clients + i;	
-			
-			if(cl->pers.someoneDiedc)
-			{
-				int j = 1;
-				counts[TEAM_BLUE] = counts[TEAM_BLUE]-j;
-				counts[TEAM_RED] = counts[TEAM_RED]-j;
-				trap_SendServerCommand( -1, va("chat \"Player blue(^5%d^7) - Player red(^1%d^7)\n\"", counts[TEAM_BLUE], counts[TEAM_RED]));
-				cl->pers.someoneDiedc = qfalse;
-				j++;
-			}
-		}
+		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
+		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
 
-		if (counts[TEAM_BLUE] <= 0 && counts[TEAM_RED] >= 1)
+		if (level.teamScores[TEAM_RED] >= counts[TEAM_BLUE])
 		{
 			Com_Printf("Team ^1Red^7 won !\n");
 			trap_SendServerCommand( -1, "chat \"Team ^1Red^7 won !\n\"");
 			LogExit("Team ^1Red^7 won !");
 			return;
 		}
-		else if (counts[TEAM_RED] <= 0 && counts[TEAM_BLUE] >= 1)
+		if (level.teamScores[TEAM_BLUE] >= counts[TEAM_RED])
 		{
 			Com_Printf("Team ^5BLUE^7 won !\n");
 			trap_SendServerCommand( -1, "chat \"Team ^5BLUE^7 won !\n\"");
@@ -2369,7 +2348,9 @@ void CheckExitRules( void ) {
 			return;
 		}
 	}
-	
+
+	//<--[BASEJKA.COM B_LTS]
+
 	if ( level.gametype < GT_SIEGE && fraglimit.integer ) {
 		if ( level.teamScores[TEAM_RED] >= fraglimit.integer ) {
 			trap_SendServerCommand( -1, va("print \"Red %s\n\"", G_GetStringEdString("MP_SVGAME", "HIT_THE_KILL_LIMIT")) );

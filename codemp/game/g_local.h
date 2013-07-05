@@ -476,12 +476,11 @@ typedef struct {
 
 	int			vote, teamvote; // 0 = none, 1 = yes, 2 = no
 
-	//[BASEJKA.COM G_COMPETITIVE]-->
+	//[BASEJKA.COM B_LTS]-->
 
 	qboolean	isDeadc;
-	qboolean	someoneDiedc;
 
-	//<--[BASEJKA.COM G_COMPETITIVE]
+	//<--[BASEJKA.COM B_LTS]
 
 } clientPersistant_t;
 

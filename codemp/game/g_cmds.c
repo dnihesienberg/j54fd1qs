@@ -662,6 +662,7 @@ void SetTeam( gentity_t *ent, char *s ) {
 	int					teamLeader;
 
 	//[BASEJKA.COM B_LTS]-->
+	teamcount_b = qfalse;
 
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
@@ -677,6 +678,29 @@ void SetTeam( gentity_t *ent, char *s ) {
 	}
 
 	//<--[BASEJKA.COM B_LTS]
+
+	//[BASEJKA.COM B_PLAYERPERTEAM]-->
+
+	/*if (b_playerperteam.integer >= 1)
+	{
+		int	counts[TEAM_NUM_TEAMS];
+
+		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
+		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
+
+		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_RED] >= b_playerperteam.integer)
+		{
+			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team red\n\"", b_playerperteam.integer));
+			return;
+		}
+		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_BLUE] >= b_playerperteam.integer)
+		{
+			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team blue\n\"", b_playerperteam.integer));
+			return;
+		}
+	}*/
+
+	//<--[BASEJKA.COM B_PLAYERPERTEAM]
 
 	// fix: this prevents rare creation of invalid players
 	if (!ent->inuse)
@@ -1915,41 +1939,70 @@ void Cmd_Where_f( gentity_t *ent ) {
 
 /*
 ==================
-Cmd_b_Whois_f
+Cmd_Whois_f
 ==================
 */
+
+//[BASEJKA.COM WHOIS + B_COMPETITIVE]-->
+
 void Cmd_Whois_f ( gentity_t *ent )
 {
-	int i;
-	gclient_t			*cl;
 
-	trap_SendServerCommand( ent-g_entities, "print \"num ping name             address        \n\"" );
-	trap_SendServerCommand( ent-g_entities, "print \"--- ---- --------------- ---------------\n\"" );
-
-	for (i = 0; i < level.maxclients; i++)
+	if (!b_competitive.integer)
 	{
-		int j;
-		char cleanName[MAX_NETNAME];
-		char IP_noport[64];
-		cl = &level.clients[i];
-		Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
-		Q_StripColor(cleanName);
-		Q_strncpyz( IP_noport, cl->sess.IP, sizeof(IP_noport) );
-		for (j = 0; IP_noport[j]; j++)
-		{
-			if (IP_noport[j] == ':')
-			{
-				IP_noport[j] = '\0';
-				break;
-			}
-		}
+		trap_SendServerCommand( ent-g_entities, "print \"b_competitive is disabled, unable to use this command.\n\"" );
+	}
+	else
+	{
 
-		if(cl && cl->pers.connected == CON_CONNECTED)
+		int i;
+		gclient_t			*cl;
+
+		trap_SendServerCommand( ent-g_entities, "print \"num ping name             address        \n\"" );
+		trap_SendServerCommand( ent-g_entities, "print \"--- ---- --------------- ---------------\n\"" );
+
+		for (i = 0; i < level.maxclients; i++)
 		{
-			trap_SendServerCommand( ent-g_entities, va("print \"%3i %4i %-15.15s %15s\n\"", cl->ps.clientNum, cl->ps.ping, cleanName, IP_noport));
+			int j;
+			char cleanName[MAX_NETNAME];
+			char IP_noport[64];
+			cl = &level.clients[i];
+			Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
+			Q_StripColor(cleanName);
+			Q_strncpyz( IP_noport, cl->sess.IP, sizeof(IP_noport) );
+			for (j = 0; IP_noport[j]; j++)
+			{
+				if (IP_noport[j] == ':')
+				{
+					IP_noport[j] = '\0';
+					break;
+				}
+			}
+
+			if(cl && cl->pers.connected == CON_CONNECTED)
+			{
+				trap_SendServerCommand( ent-g_entities, va("print \"%3i %4i %-15.15s %15s\n\"", cl->ps.clientNum, cl->ps.ping, cleanName, IP_noport));
+			}
 		}
 	}
 }
+
+//<--[BASEJKA.COM WHOIS + B_COMPETITIVE]
+
+/*
+==================
+Cmd_versionbase_f
+==================
+*/
+
+//[BASEJKA.COM VERSIONBASE]-->
+
+void Cmd_Versionbase_f ( gentity_t *ent )
+{
+	trap_SendServerCommand( ent-g_entities, va("print \"Game version : %s\n\"", GAMEVERSION ));
+}
+
+//<--[BASEJKA.COM VERSIONBASE]
 
 static const char *gameNames[] = {
 	"Free For All",
@@ -3382,10 +3435,23 @@ command_t commands[] = {
 	{ "tell",				Cmd_Tell_f,					0 },
 	{ "thedestroyer",		Cmd_TheDestroyer_f,			CMD_CHEAT|CMD_ALIVE|CMD_NOINTERMISSION },
 	{ "t_use",				Cmd_TargetUse_f,			CMD_CHEAT|CMD_ALIVE },
+	
+	//[BASEJKA.COM VERSIONBASE]-->
+
+	{ "versionbase",				Cmd_Versionbase_f,			CMD_NOINTERMISSION },
+
+	//<--[BASEJKA.COM VERSIONBASE]
+	
 	{ "voice_cmd",			Cmd_VoiceCommand_f,			CMD_NOINTERMISSION },
 	{ "vote",				Cmd_Vote_f,					CMD_NOINTERMISSION },
 	{ "where",				Cmd_Where_f,				CMD_NOINTERMISSION },
+
+	//[BASEJKA.COM WHOIS]-->
+
 	{ "whois",				Cmd_Whois_f,				CMD_NOINTERMISSION },
+
+	//<--[BASEJKA.COM WHOIS]
+
 };
 static size_t numCommands = ARRAY_LEN( commands );
 

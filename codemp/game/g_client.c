@@ -2589,6 +2589,8 @@ void ClientBegin( int clientNum, qboolean allowTeamReset ) {
 
 	ent = g_entities + clientNum;
 
+	teamcount_b = qfalse;
+
 	if ((ent->r.svFlags & SVF_BOT) && level.gametype >= GT_TEAM)
 	{
 		if (allowTeamReset)

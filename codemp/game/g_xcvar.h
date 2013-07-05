@@ -102,9 +102,21 @@ XCVAR_DEF( g_basejkadotcom,				"This server is cheat protected",				NULL,				CVA
 
 //[BASEJKA.COM B_LTS]-->
 
-XCVAR_DEF( b_lts,				"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qfalse )
+XCVAR_DEF( b_lts,						"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qfalse )
 
 //<--[BASEJKA.COM B_LTS]
+
+//[BASEJKA.COM B_COMPETITIVE]-->
+
+XCVAR_DEF( b_competitive,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+
+//<--[BASEJKA.COM B_COMPETITIVE]
+
+//[BASEJKA.COM B_PLAYERPERTEAM]-->
+
+//XCVAR_DEF( b_playerperteam,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+
+//<--[BASEJKA.COM B_PLAYERPERTEAM]
 
 XCVAR_DEF( g_needpass,					"0",			NULL,				CVAR_SERVERINFO|CVAR_ROM,						qfalse )
 XCVAR_DEF( g_noSpecMove,				"0",			NULL,				CVAR_SERVERINFO,								qtrue )

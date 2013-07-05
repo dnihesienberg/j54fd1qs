@@ -1173,7 +1173,6 @@ void respawn( gentity_t *ent ) {
 	{
 		if (ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 		{
-			int i;
 			int minDel = ((timelimit.integer)*60)*1000;
 			ent->client->tempSpectate = level.time + minDel;
 			ent->health = ent->client->ps.stats[STAT_HEALTH] = 1;
@@ -1182,22 +1181,6 @@ void respawn( gentity_t *ent ) {
 			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
 			ent->client->ps.stats[STAT_HOLDABLE_ITEM] = 0;
 			ent->takedamage = qfalse;
-			ent->client->ps.viewangles[ROLL] = 0.0f;
-			ent->client->ps.forceHandExtend = HANDEXTEND_NONE;
-			ent->client->ps.forceHandExtendTime = 0;
-			ent->client->ps.zoomMode = 0;
-			ent->client->ps.zoomLocked = qfalse;
-			ent->client->ps.zoomLockTime = 0;
-			ent->client->ps.legsAnim = 0;
-			ent->client->ps.legsTimer = 0;
-			ent->client->ps.torsoAnim = 0;
-			ent->client->ps.torsoTimer = 0;
-			ent->client->ps.isJediMaster = qfalse; // major exploit if you are spectating somebody and they are JM and you reconnect
-			ent->client->ps.cloakFuel = 100; // so that fuel goes away after stop following them
-			ent->client->ps.jetpackFuel = 100; // so that fuel goes away after stop following them
-			ent->client->ps.bobCycle = 0;
-			for ( i=0; i<PW_NUM_POWERUPS; i++ )
-			ent->client->ps.powerups[i] = 0;
 			trap_LinkEntity(ent);
 
 			// Respawn time.

@@ -1542,10 +1542,14 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 			continue;
 		}
 
+		//[BASEJKA.COM B_LTS]-->
+
 		// can't follow another spectator
-		if ( level.clients[ clientnum ].tempSpectate >= level.time ) {
+		if ( level.clients[ clientnum ].tempSpectate >= level.time && !b_lts.integer && level.gametype != GT_TEAM ) {
 			return;
 		}
+		
+		//<--[BASEJKA.COM B_LTS]
 
 		// this is good, we can use it
 		ent->client->sess.spectatorClient = clientnum;

@@ -2128,7 +2128,7 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 	{
 		if (ent->client->pers.isDeadc == qtrue)
 		{
-			strcat(ent->client->pers.netname, " (Dead)");
+			strcat(ent->client->pers.netname, " ^7(Dead)");
 		}
 	}
 

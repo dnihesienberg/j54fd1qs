@@ -27,7 +27,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\Build\Install\Base\</OutDir>
+    <OutDir>..\Build\Install\</OutDir>
     <IntDir>..\Build\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <TargetName>$(ProjectName).$(PlatformShortName)</TargetName>
     <TargetExt>.exe</TargetExt>
@@ -60,8 +60,6 @@
       <MapFileName>$(IntDir)$(ProjectName).map</MapFileName>
       <SubSystem>Console</SubSystem>
       <SetChecksum>true</SetChecksum>
-      <BaseAddress>
-      </BaseAddress>
       <RandomizedBaseAddress>true</RandomizedBaseAddress>
       <ImportLibrary>$(IntDir)$(TargetName).lib</ImportLibrary>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;wsock32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -268,6 +266,7 @@
     <ClCompile Include="null\null_input.cpp" />
     <ClCompile Include="null\null_renderer.cpp" />
     <ClCompile Include="null\null_snddma.cpp" />
+    <ClCompile Include="null\win_main.cpp" />
     <ClCompile Include="qcommon\cmd_common.cpp" />
     <ClCompile Include="qcommon\cmd_pc.cpp" />
     <ClCompile Include="qcommon\cm_draw.cpp" />
@@ -336,7 +335,6 @@
     <ClCompile Include="server\sv_snapshot.cpp" />
     <ClCompile Include="server\sv_world.cpp" />
     <ClCompile Include="sys\snapvector.cpp" />
-    <ClCompile Include="win32\win_main.cpp" />
     <ClCompile Include="win32\win_net.cpp" />
     <ClCompile Include="win32\win_shared.cpp" />
   </ItemGroup>

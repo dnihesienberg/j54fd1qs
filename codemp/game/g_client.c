@@ -1169,30 +1169,27 @@ void respawn( gentity_t *ent ) {
 
 	//[BASEJKA.COM B_LTS]-->
 
-	if ( level.gametype == GT_TEAM && b_lts.integer )
-	{
-		if (ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
-		{
-			int minDel = ((timelimit.integer)*60)*1000;
-			ent->client->tempSpectate = level.time + minDel;
-			ent->health = ent->client->ps.stats[STAT_HEALTH] = 1;
-			ent->client->ps.weapon = WP_NONE;
-			ent->client->ps.stats[STAT_WEAPONS] = 0;
-			ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
-			ent->client->ps.stats[STAT_HOLDABLE_ITEM] = 0;
-			ent->takedamage = qfalse;
-			trap_LinkEntity(ent);
+	if ( level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+	{	
+		int minDel = ((timelimit.integer)*60)*1000;
+		ent->client->tempSpectate = level.time + minDel;
+		ent->health = ent->client->ps.stats[STAT_HEALTH] = 1;
+		ent->client->ps.weapon = WP_NONE;
+		ent->client->ps.stats[STAT_WEAPONS] = 0;
+		ent->client->ps.stats[STAT_HOLDABLE_ITEMS] = 0;
+		ent->client->ps.stats[STAT_HOLDABLE_ITEM] = 0;
+		ent->takedamage = qfalse;
+		trap_LinkEntity(ent);
 
-			// Respawn time.
-			if ( ent->s.number < MAX_CLIENTS )
-			{
-				gentity_t *te = G_TempEntity( ent->client->ps.origin, EV_SIEGESPEC );
-				te->s.time = g_siegeRespawnCheck;
-				te->s.owner = ent->s.number;
-			}
-			ClientUserinfoChanged(ent->client->ps.clientNum);
-			return;
+		// Respawn time.
+		if ( ent->s.number < MAX_CLIENTS )
+		{
+			gentity_t *te = G_TempEntity( ent->client->ps.origin, EV_SIEGESPEC );
+			te->s.time = g_siegeRespawnCheck;
+			te->s.owner = ent->s.number;
 		}
+		ClientUserinfoChanged(ent->client->ps.clientNum);
+		return;
 	}
 
 	//<--[BASEJKA.COM B_LTS]
@@ -2124,12 +2121,9 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 
 	////[BASEJKA.COM B_LTS]-->
 
-	if ( level.gametype == GT_TEAM && b_lts.integer )
+	if (level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue)
 	{
-		if (ent->client->pers.isDeadc == qtrue)
-		{
-			strcat(ent->client->pers.netname, " ^7(Dead)");
-		}
+		Q_strcat(ent->client->pers.netname, MAX_NETNAME, " ^7(Dead)");
 	}
 
 	//<--[BASEJKA.COM B_LTS]

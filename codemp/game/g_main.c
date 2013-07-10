@@ -2330,8 +2330,8 @@ void CheckExitRules( void ) {
 	{
 		int	counts[TEAM_NUM_TEAMS];
 		
-		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
-		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
+		counts[TEAM_BLUE] = TeamCount(-1, TEAM_BLUE);
+		counts[TEAM_RED] = TeamCount(-1, TEAM_RED);
 
 		if (level.teamScores[TEAM_RED] >= counts[TEAM_BLUE])
 		{

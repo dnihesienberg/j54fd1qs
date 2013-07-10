@@ -717,47 +717,28 @@ void SetTeam( gentity_t *ent, char *s ) {
 				team = PickTeam( clientNum );
 			//}
 		}
-		
-		
-	//[BASEJKA.COM B_LTS]-->
+
+	//[BASEJKA.COM B_LTS + B_PLAYERPERTEAM]-->
 
 	if ( level.gametype == GT_TEAM && b_lts.integer )
-	{
+	{		
 		if(ent->client->pers.isDeadc == qtrue && team != TEAM_SPECTATOR && (ent->client->sess.sessionTeam == TEAM_RED || ent->client->sess.sessionTeam == TEAM_BLUE))
 		{
 			trap_SendServerCommand(ent-g_entities, "print \"Game is still in progress and you just died, you can't switch team\n\"");
 			return;
 		}
-		else
+		else if (b_playerperteam.integer != 0 && (TeamCount(-1, TEAM_BLUE) >= b_playerperteam.integer || TeamCount(-1, TEAM_RED) >= b_playerperteam.integer))
+		{
+			trap_SendServerCommand(ent-g_entities, va("print \"Player max per team set to %d, unable to join\n\"", b_playerperteam.integer));
+			return;
+		}
+		else 
 		{
 			ent->client->pers.isDeadc = qfalse;
 		}	
 	}
 
-	//<--[BASEJKA.COM B_LTS]
-
-	//[BASEJKA.COM B_PLAYERPERTEAM]-->
-
-	/*if (b_playerperteam.integer >= 1)
-	{
-		int	counts[TEAM_NUM_TEAMS];
-
-		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
-		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
-
-		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_RED] >= b_playerperteam.integer)
-		{
-			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team red\n\"", b_playerperteam.integer));
-			return;
-		}
-		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_BLUE] >= b_playerperteam.integer)
-		{
-			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team blue\n\"", b_playerperteam.integer));
-			return;
-		}
-	}*/
-
-	//<--[BASEJKA.COM B_PLAYERPERTEAM]
+	//<--[BASEJKA.COM B_LTS + B_PLAYERPERTEAM]
 
 		if ( g_teamForceBalance.integer && !g_jediVmerc.integer ) {
 			int		counts[TEAM_NUM_TEAMS];

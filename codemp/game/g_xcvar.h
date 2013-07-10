@@ -114,7 +114,7 @@ XCVAR_DEF( b_competitive,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 
 //[BASEJKA.COM B_PLAYERPERTEAM]-->
 
-//XCVAR_DEF( b_playerperteam,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
+XCVAR_DEF( b_playerperteam,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )
 
 //<--[BASEJKA.COM B_PLAYERPERTEAM]
 

@@ -2950,7 +2950,7 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
 		self->client->pers.isDeadc = qtrue;
-		
+
 		if (  (meansOfDeath == MOD_UNKNOWN ||
 			  meansOfDeath == MOD_WATER ||
 			  meansOfDeath == MOD_SLIME ||
@@ -2963,12 +2963,10 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			  meansOfDeath == MOD_TRIGGER_HURT) &&
 			  self->client->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR &&
 			  self->client->pers.isDeadc == qtrue &&
-			  self->client->pers.SwitchTeam_b != qtrue)
+			  self->client->pers.SwitchTeam_b == qfalse)
 		{
 			AddTeamScore_b(self, TEAM_BLUE, +1);
 			AddTeamScore_b(self, TEAM_RED, +1);
-			self->client->pers.SwitchTeam_b = qfalse;
-			trap_SendServerCommand(-1, "print \"switchteam test1\n\"");
 		}
 	}
 

@@ -946,7 +946,7 @@ void SetTeam( gentity_t *ent, char *s ) {
 		}
 		
 		ent->client->pers.SwitchTeam_b = qtrue;
-		trap_SendServerCommand(ent-g_entities, "print \"switchteam qtrue1\n\"");
+
 		//<--[BASEJKA.COM B_LTS]
 
 		// Kill him (makes sure he loses flags, etc)
@@ -955,6 +955,13 @@ void SetTeam( gentity_t *ent, char *s ) {
 		g_dontPenalizeTeam = qtrue;
 		player_die (ent, ent, ent, 100000, MOD_SUICIDE);
 		g_dontPenalizeTeam = qfalse;
+
+		//[BASEJKA.COM B_LTS]-->
+
+		ent->client->pers.SwitchTeam_b = qfalse;
+
+		//<--[BASEJKA.COM B_LTS]
+
 	}
 	// they go to the end of the line for tournements
 	if ( team == TEAM_SPECTATOR ) {

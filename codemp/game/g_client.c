@@ -2545,7 +2545,6 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	{
 		ent->client->pers.isDeadc = qfalse;
 		ent->client->pers.SwitchTeam_b = qfalse;
-		trap_SendServerCommand(ent-g_entities, "print \"switchteam qfalse1\n\"");
 	}
 
 	//<--[BASEJKA.COM B_LTS]

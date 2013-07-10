@@ -183,7 +183,7 @@ UI_OBJS			= $(B)/$(UI)/ui/ui_atoms.o \
 				  $(B)/$(UI)/ui/ui_syscalls.o
 
 OPENJKDED_NAME		= $(B)/$(INST)/openjkded.i386
-OPENJKDED_CFLAGS	= -m32 -Wall -Wno-comment -O3 -I. -I../lib -D_JK2 -DDEDICATED -DNDEBUG -DFINAL_BUILD
+OPENJKDED_CFLAGS	= -m32 -Wall -Wno-comment -O3 -I. -I../lib -I../lib/libpng -D_JK2 -DDEDICATED -DNDEBUG -DFINAL_BUILD
 OPENJKDED_LDFLAGS	= -m32 -ldl -lz
 OPENJKDED_OBJS		= $(B)/$(OPENJKDED)/botlib/be_aas_bspq3.o \
 					  $(B)/$(OPENJKDED)/botlib/be_aas_cluster.o \

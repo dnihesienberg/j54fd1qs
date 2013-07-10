@@ -1169,7 +1169,7 @@ void respawn( gentity_t *ent ) {
 
 	//[BASEJKA.COM B_LTS]-->
 
-	if ( level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
+	if (level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{	
 		int minDel = ((timelimit.integer)*60)*1000;
 		ent->client->tempSpectate = level.time + minDel;
@@ -2119,9 +2119,9 @@ qboolean ClientUserinfoChanged( int clientNum ) {
 		}
 	}
 
-	////[BASEJKA.COM B_LTS]-->
+	//[BASEJKA.COM B_LTS]-->
 
-	if (level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue)
+	if (level.gametype == GT_TEAM && b_lts.integer && ent->client->pers.isDeadc == qtrue && ent->client->sess.sessionTeam != TEAM_SPECTATOR)
 	{
 		Q_strcat(ent->client->pers.netname, MAX_NETNAME, " ^7(Dead)");
 	}
@@ -2544,6 +2544,8 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
 		ent->client->pers.isDeadc = qfalse;
+		ent->client->pers.SwitchTeam_b = qfalse;
+		trap_SendServerCommand(ent-g_entities, "print \"switchteam qfalse1\n\"");
 	}
 
 	//<--[BASEJKA.COM B_LTS]

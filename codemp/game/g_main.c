@@ -2324,12 +2324,12 @@ void CheckExitRules( void ) {
 		sKillLimit = "Kill limit hit.";
 	}
 
-	////[BASEJKA.COM B_LTS]-->
+	//[BASEJKA.COM B_LTS]-->
 
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
 		int	counts[TEAM_NUM_TEAMS];
-
+		
 		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
 		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
 

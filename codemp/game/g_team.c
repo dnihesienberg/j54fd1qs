@@ -369,11 +369,10 @@ void Team_FragBonuses(gentity_t *targ, gentity_t *inflictor, gentity_t *attacker
 
 		//[BASEJKA.COM B_LTS]-->
 
-		if ( level.gametype == GT_TEAM && b_lts.integer )
+		if (level.gametype == GT_TEAM && b_lts.integer && targ != attacker && targ->client->pers.SwitchTeam_b == qfalse)
 		{
-			level.teamScores[TEAM_BLUE] += 1;
-			level.teamScores[TEAM_RED] += 1;
-			CalculateRanks();
+			AddTeamScore_b(targ, TEAM_BLUE, +1);
+			AddTeamScore_b(targ, TEAM_RED, +1);
 		}
 
 		//<--[BASEJKA.COM B_LTS]

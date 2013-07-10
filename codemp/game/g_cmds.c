@@ -661,46 +661,6 @@ void SetTeam( gentity_t *ent, char *s ) {
 	int					specClient;
 	int					teamLeader;
 
-	//[BASEJKA.COM B_LTS]-->
-
-	if ( level.gametype == GT_TEAM && b_lts.integer )
-	{
-		if(ent->client->pers.isDeadc == qtrue && (!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ))
-		{
-			trap_SendServerCommand(ent-g_entities, "print \"Game is still in progress and you just died, you can only join spectator\n\"");
-			return;
-		}
-		else
-		{
-			ent->client->pers.isDeadc = qfalse;
-		}	
-	}
-
-	//<--[BASEJKA.COM B_LTS]
-
-	//[BASEJKA.COM B_PLAYERPERTEAM]-->
-
-	/*if (b_playerperteam.integer >= 1)
-	{
-		int	counts[TEAM_NUM_TEAMS];
-
-		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
-		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
-
-		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_RED] >= b_playerperteam.integer)
-		{
-			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team red\n\"", b_playerperteam.integer));
-			return;
-		}
-		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_BLUE] >= b_playerperteam.integer)
-		{
-			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team blue\n\"", b_playerperteam.integer));
-			return;
-		}
-	}*/
-
-	//<--[BASEJKA.COM B_PLAYERPERTEAM]
-
 	// fix: this prevents rare creation of invalid players
 	if (!ent->inuse)
 	{
@@ -757,6 +717,47 @@ void SetTeam( gentity_t *ent, char *s ) {
 				team = PickTeam( clientNum );
 			//}
 		}
+		
+		
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		if(ent->client->pers.isDeadc == qtrue && team != TEAM_SPECTATOR && (ent->client->sess.sessionTeam == TEAM_RED || ent->client->sess.sessionTeam == TEAM_BLUE))
+		{
+			trap_SendServerCommand(ent-g_entities, "print \"Game is still in progress and you just died, you can't switch team\n\"");
+			return;
+		}
+		else
+		{
+			ent->client->pers.isDeadc = qfalse;
+		}	
+	}
+
+	//<--[BASEJKA.COM B_LTS]
+
+	//[BASEJKA.COM B_PLAYERPERTEAM]-->
+
+	/*if (b_playerperteam.integer >= 1)
+	{
+		int	counts[TEAM_NUM_TEAMS];
+
+		counts[TEAM_BLUE] = TeamCount( -1, TEAM_BLUE );
+		counts[TEAM_RED] = TeamCount( -1, TEAM_RED );
+
+		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_RED] >= b_playerperteam.integer)
+		{
+			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team red\n\"", b_playerperteam.integer));
+			return;
+		}
+		if ((!strcmp (s,"s") == 0 || !strcmp (s,"spectator") || !strcmp (s,"3") ) && counts[TEAM_BLUE] >= b_playerperteam.integer)
+		{
+			trap_SendServerCommand(ent-g_entities, va("print \"b_playerperteam set to %d, unable to join team blue\n\"", b_playerperteam.integer));
+			return;
+		}
+	}*/
+
+	//<--[BASEJKA.COM B_PLAYERPERTEAM]
 
 		if ( g_teamForceBalance.integer && !g_jediVmerc.integer ) {
 			int		counts[TEAM_NUM_TEAMS];
@@ -930,20 +931,22 @@ void SetTeam( gentity_t *ent, char *s ) {
 
 		//[BASEJKA.COM B_LTS]-->
 
-		if ( level.gametype == GT_TEAM && b_lts.integer )
+		if ( level.gametype == GT_TEAM && b_lts.integer && team != TEAM_SPECTATOR )
 		{
-			if (oldTeam == TEAM_BLUE && team == TEAM_RED)
+			if (oldTeam == TEAM_BLUE)
 			{
 				trap_SendServerCommand(ent-g_entities, "print \"Team : ^5BLUE^7, go spectator to change your team\n\"");
 				return;
 			}
-			else if (oldTeam == TEAM_RED && team == TEAM_BLUE)
+			else if (oldTeam == TEAM_RED)
 			{
 				trap_SendServerCommand(ent-g_entities, "print \"Team : ^1RED^7, go spectator to change your team\n\"");
 				return;
 			}
 		}
-
+		
+		ent->client->pers.SwitchTeam_b = qtrue;
+		trap_SendServerCommand(ent-g_entities, "print \"switchteam qtrue1\n\"");
 		//<--[BASEJKA.COM B_LTS]
 
 		// Kill him (makes sure he loses flags, etc)
@@ -952,19 +955,6 @@ void SetTeam( gentity_t *ent, char *s ) {
 		g_dontPenalizeTeam = qtrue;
 		player_die (ent, ent, ent, 100000, MOD_SUICIDE);
 		g_dontPenalizeTeam = qfalse;
-
-		//[BASEJKA.COM B_LTS]-->
-
-		if ( level.gametype == GT_TEAM && b_lts.integer )
-		{
-			ent->client->pers.isDeadc = qfalse;
-			level.teamScores[TEAM_BLUE] -= 1;
-			level.teamScores[TEAM_RED] -= 1;
-			CalculateRanks();
-		}
-
-		//<--[BASEJKA.COM B_LTS]
-
 	}
 	// they go to the end of the line for tournements
 	if ( team == TEAM_SPECTATOR ) {
@@ -1568,8 +1558,16 @@ void Cmd_FollowCycle_f( gentity_t *ent, int dir ) {
 		//[BASEJKA.COM B_LTS]-->
 
 		// can't follow another spectator
-		if ( level.clients[ clientnum ].tempSpectate >= level.time && !b_lts.integer && level.gametype != GT_TEAM ) {
-			return;
+		if ( level.clients[clientnum].tempSpectate >= level.time )
+		{
+			if (b_lts.integer && level.gametype == GT_TEAM)
+			{
+				continue;
+			}
+			else
+			{
+				return;
+			}
 		}
 		
 		//<--[BASEJKA.COM B_LTS]
@@ -1963,11 +1961,11 @@ void Cmd_Whois_f ( gentity_t *ent )
 		for (i = 0; i < level.maxclients; i++)
 		{
 			int j;
-			char cleanName[MAX_NETNAME];
+			char clearedName[MAX_NETNAME];
 			char IP_noport[64];
 			cl = &level.clients[i];
-			Q_strncpyz( cleanName, cl->pers.netname, sizeof(cleanName) );
-			Q_StripColor(cleanName);
+			Q_strncpyz( clearedName, cl->pers.netname, sizeof(clearedName) );
+			Q_StripColor(clearedName);
 			Q_strncpyz( IP_noport, cl->sess.IP, sizeof(IP_noport) );
 			for (j = 0; IP_noport[j]; j++)
 			{
@@ -1980,7 +1978,7 @@ void Cmd_Whois_f ( gentity_t *ent )
 
 			if(cl && cl->pers.connected == CON_CONNECTED)
 			{
-				trap_SendServerCommand( ent-g_entities, va("print \"%3i %4i %-15.15s %15s\n\"", cl->ps.clientNum, cl->ps.ping, cleanName, IP_noport));
+				trap_SendServerCommand( ent-g_entities, va("print \"%3i %4i %-15.15s %15s\n\"", cl->ps.clientNum, cl->ps.ping, clearedName, IP_noport));
 			}
 		}
 	}

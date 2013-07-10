@@ -425,6 +425,34 @@ void ScorePlum( gentity_t *ent, vec3_t origin, int score ) {
 	plum->s.time = score;
 }
 
+//[BASEJKA.COM B_LTS]-->
+
+/*
+============
+AddTeamScore_b
+
+Adds score to a team
+============
+*/
+
+void AddTeamScore_b(gentity_t *ent, int team, int score)
+{
+	if ( !ent->client ) {
+		return;
+	}
+	
+	// no scoring during pre-match warmup
+	if ( level.warmupTime ) {
+		return;
+	}
+	
+	level.teamScores[team] += score;
+
+	CalculateRanks();
+}
+
+//<--[BASEJKA.COM B_LTS]
+
 /*
 ============
 AddScore
@@ -2922,44 +2950,26 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 	if ( level.gametype == GT_TEAM && b_lts.integer )
 	{
 		self->client->pers.isDeadc = qtrue;
-
-		/*if (self->client->pers.isDeadc == qtrue)
+		
+		if (  (meansOfDeath == MOD_UNKNOWN ||
+			  meansOfDeath == MOD_WATER ||
+			  meansOfDeath == MOD_SLIME ||
+			  meansOfDeath == MOD_LAVA ||
+			  meansOfDeath == MOD_CRUSH ||
+			  meansOfDeath == MOD_TELEFRAG ||
+			  meansOfDeath == MOD_FALLING ||
+			  meansOfDeath == MOD_SUICIDE ||
+			  meansOfDeath == MOD_TARGET_LASER ||
+			  meansOfDeath == MOD_TRIGGER_HURT) &&
+			  self->client->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR &&
+			  self->client->pers.isDeadc == qtrue &&
+			  self->client->pers.SwitchTeam_b != qtrue)
 		{
-			if (  (meansOfDeath == MOD_UNKNOWN ||
-				  meansOfDeath == MOD_WATER ||
-				  meansOfDeath == MOD_SLIME ||
-				  meansOfDeath == MOD_LAVA ||
-				  meansOfDeath == MOD_CRUSH ||
-				  meansOfDeath == MOD_TELEFRAG ||
-				  meansOfDeath == MOD_FALLING ||
-				  meansOfDeath == MOD_SUICIDE ||
-				  meansOfDeath == MOD_TARGET_LASER ||
-				  meansOfDeath == MOD_TRIGGER_HURT) && self->client->ps.persistant[PERS_TEAM] == TEAM_RED)
-			{
-				level.teamScores[TEAM_BLUE] += 1;
-				level.teamScores[TEAM_RED] += 1;
-				CalculateRanks();
-				CheckExitRules();
-			}
-			else if (  (meansOfDeath == MOD_UNKNOWN ||
-				  meansOfDeath == MOD_WATER ||
-				  meansOfDeath == MOD_SLIME ||
-				  meansOfDeath == MOD_LAVA ||
-				  meansOfDeath == MOD_CRUSH ||
-				  meansOfDeath == MOD_TELEFRAG ||
-				  meansOfDeath == MOD_FALLING ||
-				  meansOfDeath == MOD_SUICIDE ||
-				  meansOfDeath == MOD_TARGET_LASER ||
-				  meansOfDeath == MOD_TRIGGER_HURT) && self->client->ps.persistant[PERS_TEAM] == TEAM_BLUE)
-			{
-				level.teamScores[TEAM_BLUE] += 1;
-				level.teamScores[TEAM_RED] += 1;
-				CalculateRanks();
-				CheckExitRules();
-			}
-		}*/
-
-		CheckExitRules();
+			AddTeamScore_b(self, TEAM_BLUE, +1);
+			AddTeamScore_b(self, TEAM_RED, +1);
+			self->client->pers.SwitchTeam_b = qfalse;
+			trap_SendServerCommand(-1, "print \"switchteam test1\n\"");
+		}
 	}
 
 	//<--[BASEJKA.COM B_LTS]

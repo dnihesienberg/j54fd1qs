@@ -479,6 +479,7 @@ typedef struct {
 	//[BASEJKA.COM B_LTS]-->
 
 	qboolean	isDeadc;
+	qboolean	SwitchTeam_b;
 
 	//<--[BASEJKA.COM B_LTS]
 
@@ -1316,6 +1317,13 @@ void InitBodyQue (void);
 void ClientSpawn( gentity_t *ent );
 void player_die (gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int damage, int mod);
 void AddScore( gentity_t *ent, vec3_t origin, int score );
+
+//[BASEJKA.COM B_LTS]-->
+
+void AddTeamScore_b(gentity_t *ent, int team, int score);
+
+//<--[BASEJKA.COM B_LTS]
+
 void CalculateRanks( void );
 qboolean SpotWouldTelefrag( gentity_t *spot );
 

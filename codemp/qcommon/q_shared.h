@@ -82,6 +82,7 @@
 #include <ctype.h>
 #include <limits.h>
 #include <errno.h>
+#include <stddef.h>
 
 //Ignore __attribute__ on non-gcc platforms
 #if !defined(__GNUC__) && !defined(__attribute__)
@@ -501,6 +502,13 @@ typedef int		fxHandle_t;
 typedef int		sfxHandle_t;
 typedef int		fileHandle_t;
 typedef int		clipHandle_t;
+
+#define NULL_HANDLE		((qhandle_t) 0)
+#define NULL_SOUND		((sfxHandle_t) 0)
+#define NULL_FX				((fxHandle_t) 0)
+#define NULL_SFX			((sfxHandle_t) 0)
+#define NULL_FILE			((fileHandle_t) 0)
+#define NULL_CLIP			((clipHandle_t) 0)
 
 //Raz: can't think of a better place to put this atm,
 //		should probably be in the platform specific definitions

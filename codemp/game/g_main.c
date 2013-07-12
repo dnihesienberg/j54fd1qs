@@ -2157,6 +2157,31 @@ void CheckExitRules( void ) {
 		}
 	}
 	*/
+	
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		if (TeamCount(-1, TEAM_BLUE) <= 0 || TeamCount(-1, TEAM_RED) <= 0)
+		{
+			return;
+		}
+
+		if (level.teamScores[TEAM_RED] >= TeamCount(-1, TEAM_BLUE))
+		{
+			trap_SendServerCommand( -1, "chat \"Team ^1Red^7 won !\n\"");
+			LogExit("Team ^1Red^7 won !");
+			return;
+		}
+		if (level.teamScores[TEAM_BLUE] >= TeamCount(-1, TEAM_RED))
+		{
+			trap_SendServerCommand( -1, "chat \"Team ^5BLUE^7 won !\n\"");
+			LogExit("Team ^5BLUE^7 won !");
+			return;
+		}
+	}
+
+	//<--[BASEJKA.COM B_LTS]
 
 	// check for sudden death
 	if (level.gametype != GT_SIEGE)
@@ -2323,33 +2348,6 @@ void CheckExitRules( void ) {
 	{
 		sKillLimit = "Kill limit hit.";
 	}
-
-	//[BASEJKA.COM B_LTS]-->
-
-	if ( level.gametype == GT_TEAM && b_lts.integer )
-	{
-		int	counts[TEAM_NUM_TEAMS];
-		
-		counts[TEAM_BLUE] = TeamCount(-1, TEAM_BLUE);
-		counts[TEAM_RED] = TeamCount(-1, TEAM_RED);
-
-		if (level.teamScores[TEAM_RED] >= counts[TEAM_BLUE])
-		{
-			Com_Printf("Team ^1Red^7 won !\n");
-			trap_SendServerCommand( -1, "chat \"Team ^1Red^7 won !\n\"");
-			LogExit("Team ^1Red^7 won !");
-			return;
-		}
-		if (level.teamScores[TEAM_BLUE] >= counts[TEAM_RED])
-		{
-			Com_Printf("Team ^5BLUE^7 won !\n");
-			trap_SendServerCommand( -1, "chat \"Team ^5BLUE^7 won !\n\"");
-			LogExit("Team ^5BLUE^7 won !");
-			return;
-		}
-	}
-
-	//<--[BASEJKA.COM B_LTS]
 
 	if ( level.gametype < GT_SIEGE && fraglimit.integer ) {
 		if ( level.teamScores[TEAM_RED] >= fraglimit.integer ) {

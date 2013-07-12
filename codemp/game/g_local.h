@@ -142,6 +142,12 @@ extern void *g2SaberInstance;
 extern qboolean gEscaping;
 extern int gEscapeTime;
 
+//[BASEJKA.COM B_LTS]-->
+
+qboolean TeamKill_b;
+
+//<--[BASEJKA.COM B_LTS]
+
 struct gentity_s {
 	//rww - entstate must be first, to correspond with the bg shared entity structure
 	entityState_t	s;				// communicated by server to clients

@@ -2110,6 +2110,12 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	qboolean	wasJediMaster = qfalse;
 	int			sPMType = 0;
 	char		buf[512] = {0};
+	
+	//[BASEJKA.COM B_LTS]-->
+
+	TeamKill_b = qtrue;
+
+	//<--[BASEJKA.COM B_LTS]
 
 	if ( self->client->ps.pm_type == PM_DEAD ) {
 		return;
@@ -2678,6 +2684,34 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			AddScore( self, self->r.currentOrigin, -1 );
 		}
 	}
+	
+	//[BASEJKA.COM B_LTS]-->
+
+	if ( level.gametype == GT_TEAM && b_lts.integer )
+	{
+		self->client->pers.isDeadc = qtrue;
+
+		if ((meansOfDeath == MOD_UNKNOWN ||
+			  meansOfDeath == MOD_WATER ||
+			  meansOfDeath == MOD_SLIME ||
+			  meansOfDeath == MOD_LAVA ||
+			  meansOfDeath == MOD_CRUSH ||
+			  meansOfDeath == MOD_TELEFRAG ||
+			  meansOfDeath == MOD_FALLING ||
+			  meansOfDeath == MOD_SUICIDE ||
+			  meansOfDeath == MOD_TARGET_LASER ||
+			  meansOfDeath == MOD_TRIGGER_HURT) &&
+			  self->client->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR &&
+			  self->client->pers.isDeadc == qtrue &&
+			  self->client->pers.SwitchTeam_b == qfalse)
+		{
+			AddTeamScore_b(self, TEAM_BLUE, +1);
+			AddTeamScore_b(self, TEAM_RED, +1);
+			TeamKill_b = qfalse;
+		}
+	}
+
+	//<--[BASEJKA.COM B_LTS]
 
 	// Add team bonuses
 	Team_FragBonuses(self, inflictor, attacker);
@@ -2944,34 +2978,6 @@ extern void RunEmplacedWeapon( gentity_t *ent, usercmd_t **ucmd );
 			}
 		}
 	}
-
-	//[BASEJKA.COM B_LTS]-->
-
-	if ( level.gametype == GT_TEAM && b_lts.integer )
-	{
-		self->client->pers.isDeadc = qtrue;
-
-		if (  (meansOfDeath == MOD_UNKNOWN ||
-			  meansOfDeath == MOD_WATER ||
-			  meansOfDeath == MOD_SLIME ||
-			  meansOfDeath == MOD_LAVA ||
-			  meansOfDeath == MOD_CRUSH ||
-			  meansOfDeath == MOD_TELEFRAG ||
-			  meansOfDeath == MOD_FALLING ||
-			  meansOfDeath == MOD_SUICIDE ||
-			  meansOfDeath == MOD_TARGET_LASER ||
-			  meansOfDeath == MOD_TRIGGER_HURT) &&
-			  self->client->ps.persistant[PERS_TEAM] != TEAM_SPECTATOR &&
-			  self->client->pers.isDeadc == qtrue &&
-			  self->client->pers.SwitchTeam_b == qfalse)
-		{
-			AddTeamScore_b(self, TEAM_BLUE, +1);
-			AddTeamScore_b(self, TEAM_RED, +1);
-		}
-	}
-
-	//<--[BASEJKA.COM B_LTS]
-
 }
 
 

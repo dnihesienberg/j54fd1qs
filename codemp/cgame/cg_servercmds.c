@@ -124,6 +124,12 @@ void CG_ParseServerinfo( void ) {
 
 	trap_Cvar_Set("bg_fighterAltControl", Info_ValueForKey( info, "bg_fighterAltControl" ));
 
+	//[BASEJKA.COM B_KICKFLIP]-->
+	
+	trap_Cvar_Set("b_kickflip", Info_ValueForKey( info, "b_kickflip" ));
+	
+	//<--[BASEJKA.COM B_KICKFLIP]
+	
 	cgs.siegeTeamSwitch = atoi( Info_ValueForKey( info, "g_siegeTeamSwitch" ) );
 
 	cgs.showDuelHealths = atoi( Info_ValueForKey( info, "g_showDuelHealths" ) );

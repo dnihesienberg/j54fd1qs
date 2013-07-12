@@ -1976,18 +1976,18 @@ void Cmd_Whois_f ( gentity_t *ent )
 
 /*
 ==================
-Cmd_versionbase_f
+Cmd_gameversion_f
 ==================
 */
 
-//[BASEJKA.COM VERSIONBASE]-->
+//[BASEJKA.COM GAMEVERSION]-->
 
-void Cmd_Versionbase_f ( gentity_t *ent )
+void Cmd_gameVersion_f ( gentity_t *ent )
 {
 	trap_SendServerCommand( ent-g_entities, va("print \"Game version : %s\n\"", GAMEVERSION ));
 }
 
-//<--[BASEJKA.COM VERSIONBASE]
+//<--[BASEJKA.COM GAMEVERSION]
 
 static const char *gameNames[] = {
 	"Free For All",
@@ -3421,11 +3421,11 @@ command_t commands[] = {
 	{ "thedestroyer",		Cmd_TheDestroyer_f,			CMD_CHEAT|CMD_ALIVE|CMD_NOINTERMISSION },
 	{ "t_use",				Cmd_TargetUse_f,			CMD_CHEAT|CMD_ALIVE },
 	
-	//[BASEJKA.COM VERSIONBASE]-->
+	//[BASEJKA.COM GAMEVERSION]-->
 
-	{ "versionbase",				Cmd_Versionbase_f,			CMD_NOINTERMISSION },
+	{ "gameversion",				Cmd_gameVersion_f,			CMD_NOINTERMISSION },
 
-	//<--[BASEJKA.COM VERSIONBASE]
+	//<--[BASEJKA.COM GAMEVERSIOn]
 	
 	{ "voice_cmd",			Cmd_VoiceCommand_f,			CMD_NOINTERMISSION },
 	{ "vote",				Cmd_Vote_f,					CMD_NOINTERMISSION },

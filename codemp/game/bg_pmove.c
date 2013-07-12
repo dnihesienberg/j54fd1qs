@@ -1778,6 +1778,12 @@ void PM_GrabWallForJump( int anim )
 	pm->ps->pm_flags |= PMF_STUCK_TO_WALL;
 }
 
+//[BASEJKA.COM B_KICKFLIP]
+
+extern	vmCvar_t	b_kickflip;
+
+//<--[BASEJKA.COM B_KICKFLIP]-->
+
 /*
 =============
 PM_CheckJump
@@ -2300,15 +2306,20 @@ static qboolean PM_CheckJump( void )
 							VectorMA( pm->ps->velocity, -150, fwd, pm->ps->velocity );
 						}
 
-						/*
-						if ( doTrace && anim != BOTH_WALL_RUN_LEFT && anim != BOTH_WALL_RUN_RIGHT )
+						//[BASEJKA.COM B_KICKFLIP]-->
+
+						if (b_kickflip.integer)
 						{
-							if (trace.entityNum < MAX_CLIENTS)
+							if ( doTrace && anim != BOTH_WALL_RUN_LEFT && anim != BOTH_WALL_RUN_RIGHT )
 							{
-								pm->ps->forceKickFlip = trace.entityNum+1; //let the server know that this person gets kicked by this client
+								if (trace.entityNum < MAX_CLIENTS)
+								{
+									pm->ps->forceKickFlip = trace.entityNum+1; //let the server know that this person gets kicked by this client
+								}
 							}
 						}
-						*/
+
+						//<--[BASEJKA.COM B_KICKFLIP]
 
 						//up
 						if ( vertPush )
@@ -2463,12 +2474,14 @@ static qboolean PM_CheckJump( void )
 					return qfalse;
 				}
 			}
-			/*
+
+			//[BASEJKA.COM B_KICKFLIP]-->
+
 			else if ( pm->cmd.forwardmove > 0 //pushing forward
 				&& pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1
 				&& pm->ps->velocity[2] > 200
 				&& PM_GroundDistance() <= 80 //unfortunately we do not have a happy ground timer like SP (this would use up more bandwidth if we wanted prediction workign right), so we'll just use the actual ground distance.
-				&& !BG_InSpecialJump(pm->ps->legsAnim))
+				&& !BG_InSpecialJump(pm->ps->legsAnim) && b_kickflip.integer)
 			{//run up wall, flip backwards
 				vec3_t fwd, traceto, mins, maxs, fwdAngles;
 				trace_t	trace;
@@ -2497,6 +2510,7 @@ static qboolean PM_CheckJump( void )
 					{
 						parts = SETANIM_BOTH;
 					}
+					
 					PM_SetAnim( parts, BOTH_WALL_FLIP_BACK1, SETANIM_FLAG_OVERRIDE|SETANIM_FLAG_HOLD, 0 );
 
 					pm->ps->legsTimer -= 600; //I force this anim to play to the end to prevent landing on your head and suddenly flipping over.
@@ -2513,7 +2527,9 @@ static qboolean PM_CheckJump( void )
 					}
 				}
 			}
-			*/
+
+			//<--[BASEJKA.COM B_KICKFLIP]
+
 			else if ( pm->cmd.forwardmove > 0 //pushing forward
 				&& pm->ps->fd.forceRageRecoveryTime < pm->cmd.serverTime	//not in a force Rage recovery period
 				&& pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_1 
@@ -2526,12 +2542,24 @@ static qboolean PM_CheckJump( void )
 					int wallWalkAnim = BOTH_WALL_FLIP_BACK1;
 					int parts = SETANIM_LEGS;
 					int contents = MASK_SOLID;//MASK_PLAYERSOLID;//CONTENTS_SOLID;
-					//qboolean kick = qtrue;
+
+					//[BASEJKA.COM B_KICKFLIP]-->
+
+					qboolean kick = qtrue;
+
+					//<--[BASEJKA.COM B_KICKFLIP]
+
 					if ( pm->ps->fd.forcePowerLevel[FP_LEVITATION] > FORCE_LEVEL_2 )
 					{
 						wallWalkAnim = BOTH_FORCEWALLRUNFLIP_START;
 						parts = SETANIM_BOTH;
-						//kick = qfalse;
+
+						//[BASEJKA.COM B_KICKFLIP]-->
+
+						kick = qfalse;
+
+						//<--[BASEJKA.COM B_KICKFLIP]
+
 					}
 					else
 					{
@@ -2584,13 +2612,19 @@ static qboolean PM_CheckJump( void )
 							pm->ps->fd.forceJumpSound = 1;
 							BG_ForcePowerDrain( pm->ps, FP_LEVITATION, 5 );
 
-							//kick if jumping off an ent
-							/*
-							if ( kick && traceEnt && (traceEnt->s.eType == ET_PLAYER || traceEnt->s.eType == ET_NPC) )
-							{ //kick that thang!
-								pm->ps->forceKickFlip = traceEnt->s.number+1;
+							//[BASEJKA.COM B_KICKFLIP]-->
+
+							if (b_kickflip.integer)
+							{
+								//kick if jumping off an ent
+								if ( kick && traceEnt && (traceEnt->s.eType == ET_PLAYER || traceEnt->s.eType == ET_NPC) )
+								{ //kick that thang!
+									pm->ps->forceKickFlip = traceEnt->s.number+1;
+								}
 							}
-							*/
+
+							//<--[BASEJKA.COM B_KICKFLIP]
+
 							pm->cmd.rightmove = pm->cmd.forwardmove= 0;
 						}
 					}

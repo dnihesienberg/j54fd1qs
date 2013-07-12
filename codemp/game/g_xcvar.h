@@ -106,6 +106,12 @@ XCVAR_DEF( b_lts,						"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qfalse )
 
 //<--[BASEJKA.COM B_LTS]
 
+//[BASEJKA.COM B_KICKFLIP]-->
+
+XCVAR_DEF( b_kickflip,					"0",			NULL,				CVAR_ARCHIVE|CVAR_LATCH,						qfalse )
+
+//<--[BASEJKA.COM B_KICKFLIP]
+
 //[BASEJKA.COM B_COMPETITIVE]-->
 
 XCVAR_DEF( b_competitive,				"0",			NULL,				CVAR_ARCHIVE,									qfalse )

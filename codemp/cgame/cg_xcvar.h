@@ -261,4 +261,10 @@ XCVAR_DEF( cl_maxpackets,						"15",					NULL,					CVAR_NONE )
 
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER]
 
+//[BASEJKA.COM B_KICKFLIP]-->
+
+XCVAR_DEF( b_kickflip,							"0",					NULL,					CVAR_ROM )
+
+//<--[BASEJKA.COM B_KICKFLIP]
+
 #undef XCVAR_DEF

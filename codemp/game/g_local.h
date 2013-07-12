@@ -31,7 +31,7 @@ extern vec3_t gPainPoint;
 
 //[BASEJKA.COM GAMEVERSION]-->
 
-#define	GAMEVERSION	"BaseJKAdotCOM_server 1.0"
+#define	GAMEVERSION	"BaseJKAdotCOM_server 1.0.2R"
 
 //<--[BASEJKA.COM GAMEVERSION]
 

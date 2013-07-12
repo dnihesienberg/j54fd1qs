@@ -397,7 +397,7 @@ static const char *gcmds[] = {
 	"vote",
 	"where",
 	"whois",
-	"versionbase",
+	"gameversion",
 	"zoom"
 };
 static size_t numgcmds = ARRAY_LEN( gcmds );

@@ -3,9 +3,11 @@
 // cg_main.c -- initialization and primary entry point for cgame
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
+/*
 #ifdef _WINDOWS
 #include <windows.h>
 #endif
+*/
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER] BY MYWAY/VINCENT & YBERION/BRANDON
 
 #include "cg_local.h"
@@ -186,7 +188,7 @@ int esl_tabValue[] = {	0, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0
 //<--[BASEJKA.COM PROTECTION CVAR UNLOCKER]
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
-
+/*
 #ifdef _WINDOWS
 HANDLE phandle;
 DWORD pid;
@@ -206,7 +208,7 @@ int getPacket()
 	return value;
 }
 #endif
-
+*/
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER] BY MYWAY/VINCENT & YBERION/BRANDON
 
 /*
@@ -220,7 +222,7 @@ This must be the very first function compiled into the .q3vm file
 Q_EXPORT intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11  ) {
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
-
+/*
 	#ifdef _WINDOWS
 	int deftn_min = -30;
 	int deftn_max = 30;
@@ -258,7 +260,7 @@ Q_EXPORT intptr_t vmMain( int command, int arg0, int arg1, int arg2, int arg3, i
 		}
 	}
 	#endif
-
+*/
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER] BY MYWAY/VINCENT & YBERION/BRANDON
 
 	switch ( command ) {
@@ -2966,7 +2968,7 @@ Will perform callbacks to make the loading info screen update.
 */
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
-
+/*
 #ifdef _WINDOWS
 void timenudgefinder()
 {
@@ -3068,7 +3070,7 @@ void packetfinder()
 	}
 }
 #endif
-
+*/
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER] BY MYWAY/VINCENT & YBERION/BRANDON
 
 void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum )
@@ -3079,7 +3081,7 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum )
 	int i = 0;
 
 //[BASEJKA.COM PROTECTION LAG UNLOCKER]--> BY MYWAY/VINCENT & YBERION/BRANDON
-
+/*
 	#ifdef _WINDOWS
 	hwnd = FindWindow(NULL,"Jedi Knight®: Jedi Academy (MP)");
 	GetWindowThreadProcessId(hwnd,&pid);
@@ -3100,7 +3102,7 @@ void CG_Init( int serverMessageNum, int serverCommandSequence, int clientNum )
 		}
 	}
 	#endif
-
+*/
 //<--[BASEJKA.COM PROTECTION LAG UNLOCKER] BY MYWAY/VINCENT & YBERION/BRANDON
 
 	BG_InitAnimsets(); //clear it out
